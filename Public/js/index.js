@@ -1,33 +1,40 @@
-axios
-  .get("https://maps.googleapis.com/maps/api/geocode/json", {
-    params: {
-      address: "brisbane",
-      key: "AIzaSyDKbB8UU_VvM-PffHsAmP8lwMSKE3ZiHm8",
-    },
-  })
-  .then((response) => {
-    console.log(response.data);
-  });
+import { geoLocation, getWeather } from "./services/api.js";
 
-axios({
-  method: "GET",
-  url: "https://community-open-weather-map.p.rapidapi.com/weather",
-  headers: {
-    "content-type": "application/octet-stream",
-    "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
-    "x-rapidapi-key": "fbd685c5aamsh8b1d93568dc8c70p17fb7cjsn13fbdb1a870d",
-    useQueryString: true,
-  },
-  params: {
-    lat: "-27.4697707",
-    lon: "153.0251235",
-    units: "%22metric%22 or %22imperial%22",
-    mode: "xml%2C html",
-  },
-})
-  .then((response) => {
-    console.log(response.data);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+class UI {
+  static printData(weatherParams) {
+    const Div = document.getElementById("content");
+
+    Div.innerHTML = `
+        <h3>${weatherParams.lat}</h3>
+        <h3>${weatherParams.lng}</h3>
+    `;
+  }
+}
+
+class API {
+  static getGeo() {
+    // Getting geolocation from Google API
+    geoLocation("germany").then((response) => {
+      console.log(response.data.results[0]);
+
+      const weatherParams = response.data.results[0].geometry.location;
+
+      UI.printData(weatherParams);
+
+      // Sending geometry to the weather api
+      this.weather(weatherParams);
+    });
+  }
+
+  static weather(weatherParams) {
+    getWeather(weatherParams.lat, weatherParams.lng).then((response) => {
+      console.log(response.data);
+    });
+  }
+}
+
+API.getGeo();
+
+// getWeather().then((response) => {
+//   console.log(response.data);
+// });

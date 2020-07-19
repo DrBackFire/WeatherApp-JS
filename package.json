@@ -1,0 +1,27 @@
+{
+  "name": "weatherapp-js",
+  "version": "1.0.0",
+  "description": "Weather app using js and Nodejs",
+  "main": "server",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DrBackFire/WeatherApp-JS.git"
+  },
+  "author": "Abdulrahman Ebrahim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DrBackFire/WeatherApp-JS/issues"
+  },
+  "homepage": "https://github.com/DrBackFire/WeatherApp-JS#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
