@@ -2,6 +2,7 @@
 import UI from "../UI/UI.js";
 
 export default class API {
+  // Getting weather from express
   static async getWeather(lat, lon) {
     const response = await axios({
       method: "post",
@@ -11,6 +12,7 @@ export default class API {
         lon,
       },
     });
+    // Passing data to UI
     this.setWeather(response.data.weather[0]);
     this.setTemp(response.data.main);
     this.setHi_low(response.data.main);

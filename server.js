@@ -10,19 +10,20 @@ app.use(express.json());
 // Static folder
 app.use(express.static("public"));
 
+// Handling post req to get data from weather api
 app.post("/weather", async (req, res) => {
   try {
     const response = await axios.get(
       "https://api.openweathermap.org/data/2.5/weather",
       {
         params: {
-          lat: req.body.lat,
+          lat: req.body.lat, // from front end post req
           lon: req.body.lon,
-          appid: process.env.appid,
+          appid: process.env.appid, // From .env file
         },
       }
     );
-    return res.json(response.data);
+    return res.json(response.data); // Sending down data to Frontend
   } catch (error) {
     return error;
   }
