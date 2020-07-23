@@ -1,36 +1,34 @@
 // Getting geolocation from Google API
-export const geoLocation = async (location) => {
-  try {
-    const response = await axios.get(
-      "https://maps.googleapis.com/maps/api/geocode/json",
-      {
-        params: {
-          address: location,
-          key: "AIzaSyDKbB8UU_VvM-PffHsAmP8lwMSKE3ZiHm8",
-        },
-      }
-    );
+import UI from "../UI/UI.js";
 
-    return response;
-  } catch (error) {
-    console.error(error);
+export default class API {
+  static async getWeather(lat, lon) {
+    const response = await axios({
+      method: "post",
+      url: "/weather",
+      data: {
+        lat,
+        lon,
+      },
+    });
+    this.setWeather(response.data.weather[0]);
+    this.setTemp(response.data.main);
+    this.setHi_low(response.data.main);
+    console.log(response.data);
   }
-};
+  catch(error) {
+    UI.error(error);
+  }
 
-export const getWeather = async (lat, lon) => {
-  try {
-    const response = await axios.get(
-      "https://api.openweathermap.org/data/2.5/weather",
-      {
-        params: {
-          lat: lat,
-          lon: lon,
-          appid: "196b509ce7a99dc59e9e53fdae7d60ca",
-        },
-      }
-    );
-    return response;
-  } catch (error) {
-    console.error(error);
+  static setWeather(data) {
+    UI.setCurrent(data.main);
   }
-};
+
+  static setTemp(temp) {
+    UI.setTemp(temp);
+  }
+
+  static setHi_low(temp) {
+    UI.setHi_low(temp);
+  }
+}

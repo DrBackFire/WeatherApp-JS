@@ -1,40 +1,20 @@
-import { geoLocation, getWeather } from "./services/api.js";
+import API from "./services/api.js";
+import UI from "./UI/UI.js";
 
-class UI {
-  static printData(weatherParams) {
-    const Div = document.getElementById("content");
+window.addEventListener("DOMContentLoaded", () => {
+  // Getting geolocation from Google API
+  const searchCity = document.querySelector("[data-search-city]");
+  const searchBox = new google.maps.places.SearchBox(searchCity);
 
-    Div.innerHTML = `
-        <h3>${weatherParams.lat}</h3>
-        <h3>${weatherParams.lng}</h3>
-    `;
-  }
-}
+  searchBox.addListener("places_changed", () => {
+    const place = searchBox.getPlaces()[0];
+    if (place == null) return;
 
-class API {
-  static getGeo() {
-    // Getting geolocation from Google API
-    geoLocation("germany").then((response) => {
-      console.log(response.data.results[0]);
-
-      const weatherParams = response.data.results[0].geometry.location;
-
-      UI.printData(weatherParams);
-
-      // Sending geometry to the weather api
-      this.weather(weatherParams);
-    });
-  }
-
-  static weather(weatherParams) {
-    getWeather(weatherParams.lat, weatherParams.lng).then((response) => {
-      console.log(response.data);
-    });
-  }
-}
-
-API.getGeo();
-
-// getWeather().then((response) => {
-//   console.log(response.data);
-// });
+    const latitude = place.geometry.location.lat();
+    const longitude = place.geometry.location.lng();
+    console.log(place);
+    API.getWeather(latitude, longitude);
+    UI.setDate();
+    UI.setAddress(place.formatted_address);
+  });
+});
